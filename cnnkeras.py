@@ -21,3 +21,9 @@ X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
 X_train /= 255
 X_test /= 255
+
+# Convert 1-dimensional class arrays to 10-dimensional class matrices
+Y_train = np_utils.to_categorical(y_train, 10)
+Y_test = np_utils.to_categorical(y_test, 10)
+
+print Y_train[:3]
