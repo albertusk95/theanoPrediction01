@@ -58,6 +58,20 @@ def load_data(source, dist, max_len, vocab_size):
                 y[i][j] = y_word_to_ix['UNK']
     return (X, len(X_vocab)+2, X_word_to_ix, X_ix_to_word, y, len(y_vocab)+2, y_word_to_ix, y_ix_to_word)
 	
+def load_test_data(source, X_word_to_ix, max_len):
+    f = open(source, 'r')
+    X_data = f.read()
+    f.close()
+
+    X = [text_to_word_sequence(x)[::-1] for x in X_data.split('\n') if len(x) > 0 and len(x) <= max_len]
+    for i, sentence in enumerate(X):
+        for j, word in enumerate(sentence):
+            if word in X_word_to_ix:
+                X[i][j] = X_word_to_ix[word]
+            else:
+                X[i][j] = X_word_to_ix['UNK']
+    return X	
+
 def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, hidden_size, num_layers):
     model = Sequential()
 
