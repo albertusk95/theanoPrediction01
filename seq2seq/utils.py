@@ -58,6 +58,24 @@ def load_data(source, dist, max_len, vocab_size):
                 y[i][j] = y_word_to_ix['UNK']
     return (X, len(X_vocab)+2, X_word_to_ix, X_ix_to_word, y, len(y_vocab)+2, y_word_to_ix, y_ix_to_word)
 	
+def create_model(X_vocab_len, X_max_len, y_vocab_len, y_max_len, hidden_size, num_layers):
+    model = Sequential()
+
+    # Creating encoder network
+    model.add(Embedding(X_vocab_len, 1000, input_length=X_max_len, mask_zero=True))
+    model.add(LSTM(hidden_size))
+    model.add(RepeatVector(y_max_len))
+
+    # Creating decoder network
+    for _ in range(num_layers):
+        model.add(LSTM(hidden_size, return_sequences=True))
+    model.add(TimeDistributed(Dense(y_vocab_len)))
+    model.add(Activation('softmax'))
+    model.compile(loss='categorical_crossentropy',
+            optimizer='rmsprop',
+            metrics=['accuracy'])
+    return model
+	
 def process_data(word_sentences, max_len, word_to_ix):
     # Vectorizing each element in each sequence
     sequences = np.zeros((len(word_sentences), max_len, len(word_to_ix)))
