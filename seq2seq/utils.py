@@ -57,3 +57,11 @@ def load_data(source, dist, max_len, vocab_size):
             else:
                 y[i][j] = y_word_to_ix['UNK']
     return (X, len(X_vocab)+2, X_word_to_ix, X_ix_to_word, y, len(y_vocab)+2, y_word_to_ix, y_ix_to_word)
+	
+def process_data(word_sentences, max_len, word_to_ix):
+    # Vectorizing each element in each sequence
+    sequences = np.zeros((len(word_sentences), max_len, len(word_to_ix)))
+    for i, sentence in enumerate(word_sentences):
+        for j, word in enumerate(sentence):
+            sequences[i, j, word] = 1.
+    return sequences
