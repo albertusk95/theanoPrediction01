@@ -4,7 +4,7 @@ import numpy as np
 import sys
 
 import argparse
-from seq2seq_utils import *
+from utils import *
 
 ap = argparse.ArgumentParser()
 ap.add_argument('-max_len', type=int, default=200)
