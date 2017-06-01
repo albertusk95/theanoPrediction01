@@ -97,3 +97,10 @@ def process_data(word_sentences, max_len, word_to_ix):
         for j, word in enumerate(sentence):
             sequences[i, j, word] = 1.
     return sequences
+	
+def find_checkpoint_file(folder):
+    checkpoint_file = [f for f in os.listdir(folder) if 'checkpoint' in f]
+    if len(checkpoint_file) == 0:
+        return []
+    modified_time = [os.path.getmtime(f) for f in checkpoint_file]
+    return checkpoint_file[np.argmax(modified_time)]
